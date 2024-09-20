@@ -33,7 +33,7 @@ func (r *Ring) Init(num int) {
 }
 
 func (r *Ring) init(num uint64) {
-	// 下面代码相当于：2^(N+1)
+	// =========== 下面代码相当于：2^(N+1) =============
 	// 2^N：确保 num 为2的幂，如果不是，则调整为下一个2的幂。如：2、4、8、16
 	if num&(num-1) != 0 {
 		for num&(num-1) != 0 {
@@ -41,6 +41,7 @@ func (r *Ring) init(num uint64) {
 		}
 		num <<= 1
 	}
+	// ===============================================
 	r.data = make([]protocol.Proto, num)
 	r.num = num
 	r.mask = r.num - 1

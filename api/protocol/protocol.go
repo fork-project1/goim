@@ -74,11 +74,11 @@ func (p *Proto) ReadTCP(rr *bufio.Reader) (err error) {
 	if buf, err = rr.Pop(_rawHeaderSize); err != nil {
 		return
 	}
-	packLen = binary.BigEndian.Int32(buf[_packOffset:_headerOffset])
-	headerLen = binary.BigEndian.Int16(buf[_headerOffset:_verOffset])
-	p.Ver = int32(binary.BigEndian.Int16(buf[_verOffset:_opOffset]))
-	p.Op = binary.BigEndian.Int32(buf[_opOffset:_seqOffset])
-	p.Seq = binary.BigEndian.Int32(buf[_seqOffset:])
+	packLen = binary.BigEndian.Int32(buf[_packOffset:_headerOffset])  // 包长度
+	headerLen = binary.BigEndian.Int16(buf[_headerOffset:_verOffset]) // 头长度
+	p.Ver = int32(binary.BigEndian.Int16(buf[_verOffset:_opOffset]))  // 协议版本
+	p.Op = binary.BigEndian.Int32(buf[_opOffset:_seqOffset])          // 操作码（Auth、Heartbeat、Message）
+	p.Seq = binary.BigEndian.Int32(buf[_seqOffset:])                  // 请求序号ID（按请求、响应对应递增ID）
 	if packLen > _maxPackSize {
 		return ErrProtoPackLen
 	}
