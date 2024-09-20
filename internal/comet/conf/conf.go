@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bilibili/discovery/naming"
 	"github.com/BurntSushi/toml"
 	xtime "github.com/Terry-Mao/goim/pkg/time"
+	"github.com/bilibili/discovery/naming"
 )
 
 var (
@@ -185,8 +185,8 @@ type Bucket struct {
 	Size          int
 	Channel       int
 	Room          int
-	RoutineAmount uint64
-	RoutineSize   int
+	RoutineAmount uint64 // 广播协程的数量
+	RoutineSize   int    // 广播协程的队列大小
 }
 
 // Whitelist is white list config.

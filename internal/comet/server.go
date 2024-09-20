@@ -76,7 +76,7 @@ func NewServer(c *conf.Config) *Server {
 		s.buckets[i] = NewBucket(c.Bucket)
 	}
 	s.serverID = c.Env.Host
-	go s.onlineproc()
+	go s.onlineproc() // 定时更新房间在线人数
 	return s
 }
 

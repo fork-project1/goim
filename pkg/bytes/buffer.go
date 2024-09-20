@@ -52,15 +52,17 @@ func (p *Pool) grow() {
 		bs  []Buffer
 		buf []byte
 	)
-	buf = make([]byte, p.max)
-	bs = make([]Buffer, p.num)
-	p.free = &bs[0]
+	buf = make([]byte, p.max)  // 内存池的总大小，一次创建好减少对象的创建
+	bs = make([]Buffer, p.num) // 内存池的数量
+	p.free = &bs[0]            // pool 记录第一个可用内存的指针
+	// 初始化 bs 中的全部 Buffer
 	b = p.free
 	for i = 1; i < p.num; i++ {
 		b.buf = buf[(i-1)*p.size : i*p.size]
 		b.next = &bs[i]
 		b = b.next
 	}
+	// 将最后一个 Buffer 的 next 指针设为 nil
 	b.buf = buf[(i-1)*p.size : i*p.size]
 	b.next = nil
 }

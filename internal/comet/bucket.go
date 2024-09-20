@@ -15,8 +15,8 @@ type Bucket struct {
 	cLock sync.RWMutex        // protect the channels for chs
 	chs   map[string]*Channel // map sub key to a channel
 	// room
-	rooms       map[string]*Room // bucket room channels
-	routines    []chan *pb.BroadcastRoomReq
+	rooms       map[string]*Room            // bucket room channels
+	routines    []chan *pb.BroadcastRoomReq // 广播 channel 数组
 	routinesNum uint64
 
 	ipCnts map[string]int32
@@ -33,6 +33,7 @@ func NewBucket(c *conf.Bucket) (b *Bucket) {
 	for i := uint64(0); i < c.RoutineAmount; i++ {
 		c := make(chan *pb.BroadcastRoomReq, c.RoutineSize)
 		b.routines[i] = c
+		// 通过房间id，推送数据
 		go b.roomproc(c)
 	}
 	return

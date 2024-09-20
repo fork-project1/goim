@@ -22,7 +22,7 @@ type RoundOptions struct {
 type Round struct {
 	readers []bytes.Pool
 	writers []bytes.Pool
-	timers  []time.Timer
+	timers  []time.Timer // 定时器数组（time.Timer 使用堆实现）
 	options RoundOptions
 }
 
@@ -37,7 +37,7 @@ func NewRound(c *conf.Config) (r *Round) {
 			Writer:       c.TCP.Writer,
 			WriteBuf:     c.TCP.WriteBuf,
 			WriteBufSize: c.TCP.WriteBufSize,
-			Timer:        c.Protocol.Timer,
+			Timer:        c.Protocol.Timer, // 定时器数量
 			TimerSize:    c.Protocol.TimerSize,
 		}}
 	// reader

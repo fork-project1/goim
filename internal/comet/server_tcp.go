@@ -72,13 +72,14 @@ func acceptTCP(server *Server, lis *net.TCPListener) {
 			return
 		}
 		go serveTCP(server, conn, r)
-		if r++; r == maxInt {
+		if r++; r == maxInt { // 接收消息的次数重置
 			r = 0
 		}
 	}
 }
 
 func serveTCP(s *Server, conn *net.TCPConn, r int) {
+	// r 是当前接受者的索引
 	var (
 		// timer
 		tr = s.round.Timer(r)
