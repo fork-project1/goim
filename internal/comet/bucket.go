@@ -19,7 +19,7 @@ type Bucket struct {
 	routines    []chan *pb.BroadcastRoomReq // 广播 channel 数组
 	routinesNum uint64
 
-	ipCnts map[string]int32
+	ipCnts map[string]int32 // 记录ip地址的连接数（多个请求可能网关一样，导致 ip 一样）
 }
 
 // NewBucket new a bucket struct. store the key with im channel.

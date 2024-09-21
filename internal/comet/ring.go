@@ -10,13 +10,13 @@ import (
 // Ring ring proto buffer.
 type Ring struct {
 	// read
-	rp   uint64
+	rp   uint64 // 读取位置
 	num  uint64
 	mask uint64
 	// TODO split cacheline, many cpu cache line size is 64
 	// pad [40]byte
 	// write
-	wp   uint64
+	wp   uint64 // 写位置
 	data []protocol.Proto
 }
 
@@ -49,7 +49,7 @@ func (r *Ring) init(num uint64) {
 
 // Get get a proto from ring.
 func (r *Ring) Get() (proto *protocol.Proto, err error) {
-	if r.rp == r.wp {
+	if r.rp == r.wp { // 没有数据的情况
 		return nil, errors.ErrRingEmpty
 	}
 	proto = &r.data[r.rp&r.mask]

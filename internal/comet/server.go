@@ -56,7 +56,7 @@ type Server struct {
 	c         *conf.Config
 	round     *Round    // accept round store
 	buckets   []*Bucket // subkey bucket
-	bucketIdx uint32
+	bucketIdx uint32    // Bucket 桶的大小
 
 	serverID  string
 	rpcClient logic.LogicClient
@@ -87,6 +87,7 @@ func (s *Server) Buckets() []*Bucket {
 
 // Bucket get the bucket by subkey.
 func (s *Server) Bucket(subKey string) *Bucket {
+	// subKey 是请求的唯一标识，通过 uuid.New().String() 生成
 	idx := cityhash.CityHash32([]byte(subKey), uint32(len(subKey))) % s.bucketIdx
 	if conf.Conf.Debug {
 		log.Infof("%s hit channel bucket index: %d use cityhash", subKey, idx)

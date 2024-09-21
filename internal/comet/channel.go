@@ -11,8 +11,8 @@ import (
 // Channel used by message pusher send msg to write goroutine.
 type Channel struct {
 	Room     *Room
-	CliProto Ring
-	signal   chan *protocol.Proto
+	CliProto Ring                 // 处理客户端协议
+	signal   chan *protocol.Proto // 服务内部的信号
 	Writer   bufio.Writer
 	Reader   bufio.Reader
 	Next     *Channel
@@ -20,7 +20,7 @@ type Channel struct {
 
 	Mid      int64
 	Key      string
-	IP       string
+	IP       string // 请求的 ip 地址
 	watchOps map[int32]struct{}
 	mutex    sync.RWMutex
 }

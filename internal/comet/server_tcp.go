@@ -120,17 +120,17 @@ func (s *Server) ServeTCP(conn *net.TCPConn, rp, wp *bytes.Pool, tr *xtime.Timer
 	// handshake
 	step := 0
 	trd = tr.Add(time.Duration(s.c.Protocol.HandshakeTimeout), func() {
-		conn.Close()
 		log.Errorf("key: %s remoteIP: %s step: %d tcp handshake timeout", ch.Key, conn.RemoteAddr().String(), step)
 	})
 	ch.IP, _, _ = net.SplitHostPort(conn.RemoteAddr().String())
 	// must not setadv, only used in auth
 	step = 1
 	if p, err = ch.CliProto.Set(); err == nil {
+		// hb：心跳检测的周期
 		if ch.Mid, ch.Key, rid, accepts, hb, err = s.authTCP(ctx, rr, wr, p); err == nil {
 			ch.Watch(accepts...)
 			b = s.Bucket(ch.Key)
-			err = b.Put(rid, ch)
+			err = b.Put(rid, ch) // 记录房间的 channel
 			if conf.Conf.Debug {
 				log.Infof("tcp connnected key:%s mid:%d proto:%+v", ch.Key, ch.Mid, p)
 			}
