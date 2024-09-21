@@ -15,7 +15,8 @@ type Bucket struct {
 	cLock sync.RWMutex        // protect the channels for chs
 	chs   map[string]*Channel // map sub key to a channel
 	// room
-	rooms       map[string]*Room            // bucket room channels
+	rooms map[string]*Room // bucket room channels
+	// 这里用数组，也是为了打散锁，因为 chan 的处理也要加锁
 	routines    []chan *pb.BroadcastRoomReq // 广播 channel 数组
 	routinesNum uint64
 

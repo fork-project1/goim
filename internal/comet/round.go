@@ -22,7 +22,7 @@ type RoundOptions struct {
 type Round struct {
 	readers []bytes.Pool
 	writers []bytes.Pool
-	timers  []time.Timer // 定时器数组（time.Timer 使用堆实现）。如：心跳检查使用
+	timers  []time.Timer // 定时器数组（time.Timer 使用堆实现）
 	options RoundOptions
 }
 
